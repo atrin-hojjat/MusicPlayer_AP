@@ -64,9 +64,9 @@ class MainView(QMainWindow, Ui_MainWindow):
     def open_files(self): 
         dialog = QFileDialog()
         dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setFilter("Mp3 (*.mp3), WAV (*.wav)")
+        dialog.setNameFilters(["Mp3 (*.mp3)", "WAV (*.wav)"])
 
-        files = QStringList()
+        files = []
 
         if dialog.exec_():
             files = dialog.selectedFiles()
