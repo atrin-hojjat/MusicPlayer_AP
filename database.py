@@ -16,4 +16,24 @@ def delete_song_by_id(id ) :
 
 
 def get_album(album ) :
+    
     first.execute("SELECT * FROM music WHERE album  = ?" , (album ) )
+    new_list = first.fetchall()
+    
+    return new_list
+
+def get_artist(artist ) :
+
+    first.execute("SELECT * FROM music WHERE artist = ?" , (artist) ) 
+    new_list = first.fetchall() 
+    
+    return new_list
+
+def get_gener(gener) :
+
+    first.execute("SELETC * from music WHERE gener = ? " , (gener) ) 
+    new_list = first.fetchall() 
+    
+    return new_list
+
+
