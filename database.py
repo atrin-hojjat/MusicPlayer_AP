@@ -5,6 +5,7 @@ connection = sqlite3.connect('musics.db')
 
 first = connection.cursor() 
 
+#insert a song to our music table with song's information 
 
 def insert_song(song_name , artist , publish_year , album , address , gener) :
 
@@ -13,10 +14,14 @@ def insert_song(song_name , artist , publish_year , album , address , gener) :
     
     connection.close()
 
+#delete a song by it's id
+
 def delete_song_by_id(id ) :
     first.execute("DELETE from music WHERE rowid = ?" , (id) ) 
 
     connection.close()
+
+#gives the user all the songs in album which he wants
 
 def get_album(album ) :
     
@@ -27,6 +32,8 @@ def get_album(album ) :
 
     return new_list
 
+#gives the user all the songs from artist he wants
+
 def get_artist(artist ) :
 
     first.execute("SELECT * FROM music WHERE artist = ?" , (artist) ) 
@@ -35,6 +42,8 @@ def get_artist(artist ) :
     connection.close()
 
     return new_list
+
+#gives the user all the songs with the gener he wants
 
 def get_gener(gener) :
 
@@ -45,6 +54,8 @@ def get_gener(gener) :
 
     return new_list
 
+# gives the user list of all existing albums
+
 def get_albums() :
 
     first.execute("SELECT DISTINCT album FROM music ")
@@ -53,6 +64,8 @@ def get_albums() :
     connection.close()
 
     return new_list
+
+# gives the user list of all existing artists
 
 def get_artists() :
 
@@ -63,6 +76,8 @@ def get_artists() :
 
     return new_list 
 
+#gives the user list of all geners
+
 def get_gener() :
 
     first.execute("SELECT DISTINCT gener FROM music " ) 
@@ -71,6 +86,8 @@ def get_gener() :
     connection.close()
 
     return new_list
+
+#gives the user all the songs from playlist which user wants
 
 def get_playlist(id ) :
     
@@ -81,6 +98,8 @@ def get_playlist(id ) :
 
     return new_list 
 
+#shows all the existing playlists
+
 def get_playlists() :
 
     first.execute("SELECT DISTINCT playlist_id FROM playlist_song " )
@@ -89,6 +108,8 @@ def get_playlists() :
     connection.close()
 
     return new_list
+
+#add a new playlist with all songs user wants 
 
 def add_playlist(playlist_name , song_list ) :
 
@@ -103,6 +124,8 @@ def add_playlist(playlist_name , song_list ) :
     first.execute("INSERT INTO Playlist_song VALUES (? , ? , ? ) " , new_list) 
 
     connection.close()
+
+#delete a playlist by its name which user gives us
 
 def delete_playlist(playlist_name ) :
 
