@@ -50,9 +50,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="playbackButton">
+      <widget class="QPushButton" name="playButton">
        <property name="text">
-        <string>Play/Pause</string>
+        <string>Play</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pauseButton">
+       <property name="text">
+        <string>Pause</string>
        </property>
       </widget>
      </item>
@@ -76,7 +83,7 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="timeLable">
+      <widget class="QLabel" name="timeLabel">
        <property name="text">
         <string>0:0/0:0</string>
        </property>
@@ -134,8 +141,20 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFiles">
+    <property name="title">
+     <string>Files</string>
+    </property>
+    <addaction name="actionOpen_Files"/>
+   </widget>
+   <addaction name="menuFiles"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen_Files">
+   <property name="text">
+    <string>Open Files</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
