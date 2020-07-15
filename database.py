@@ -36,4 +36,33 @@ def get_gener(gener) :
     
     return new_list
 
+def get_albums() :
+
+    first.execute("SELECT DISTINCT album FROM music ")
+    new_list = first.fetchall() 
+    
+    return new_list
+
+def get_artists() :
+
+    first.execute("SELECT DISTINCT artist FROM music ") 
+    new_list = first.fetchall() 
+
+    return new_list 
+
+def get_gener() :
+
+    first.execute("SELECT DISTINCT gener FROM music " ) 
+    new_list = first.fetchall() 
+
+    return new_list
+
+def get_playlist(id ) :
+    
+    first.execute("SELETC * FROM playlist_song WHERE playlist_id = ? " (id) )
+    new_list = first.fetchall() 
+    
+    return new_list 
+
+
 
