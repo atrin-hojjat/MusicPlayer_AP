@@ -39,10 +39,10 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         self.playlistModel = PlayListModel(self.playlist)
         self.currentPlayList.setModel(self.playlistModel)
-        self.playlist.currentIndexChanged.connect(self.playlistModel.playListChange)
+        self.playlist.currentIndexChanged.connect(self.playListChange)
 
         playlist_sel_mod = self.currentPlayList.selectionModel()
-        playlist_sel_mod.selectionChanged.connect(self.playlistModel.selectionChanged)
+        playlist_sel_mod.selectionChanged.connect(self.selectionChanged)
 
 
 
@@ -75,7 +75,7 @@ class MainView(QMainWindow, Ui_MainWindow):
             print(f)
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(f)))
 
-        self.model.layoutChanged.emit()
+        self.playlistModel.layoutChanged.emit()
 
 
     def convertTime(self, time):
@@ -104,6 +104,17 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.timeSlider.blockSignals(True)
         self.timeSlider.setValue(position)
         self.timeSlider.blockSignals(False)
+
+    def selectionChanged(self, ind):
+        i = ind.indexes()[0].row()
+        self.playlist.setCurrentIndex(i)
+
+    def playListChange(self, ind):
+        if ind > -1:
+            i = self.playlistModel.index(ind)
+            self.currentPlayList.setCurrentIndex(i)
+    
+
 
 
 
