@@ -5,7 +5,7 @@ from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
 
 class PlayListModel(QAbstractListModel):
-    def __init__(self, playlist, *arg, **kwargs):
+    def __init__(self, playlist, *args, **kwargs):
         super(PlayListModel, self).__init__(*args, *kwargs)
         self.playlist = playlist
 
