@@ -19,7 +19,7 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         # Player
         self.player = QMediaPlayer()
-        self.player.error.connect(self.erroralert)
+#        self.player.error.connect(self.erroralert)
 
         self.pauseButton.pressed.connect(self.player.pause)
         self.playButton.pressed.connect(self.player.play)
@@ -32,7 +32,7 @@ class MainView(QMainWindow, Ui_MainWindow):
         # PlayList
         self.playlist = QMediaPlaylist()
 
-        self.player.setMediaPlaylist(self.playlist)
+        self.player.setPlaylist(self.playlist)
 
         self.nextButton.pressed.connect(self.playlist.next)
         self.previousButton.pressed.connect(self.playlist.previous)
@@ -41,7 +41,8 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.currentPlayList.setModel(self.playlistModel)
         self.playlist.currentIndexChanged.connect(self.playlistModel.playListChange)
 
-        self.currentPlayList.selectionModel().selectionChenged.connect(self.playlistModel.selectionChanged)
+        playlist_sel_mod = self.currentPlayList.selectionModel()
+        playlist_sel_mod.selectionChanged.connect(self.playlistModel.selectionChanged)
 
 
 
@@ -71,7 +72,8 @@ class MainView(QMainWindow, Ui_MainWindow):
 
 
     def convertTime(self, time):
-        s = int(s / 1000)
+        if not time: time = 0
+        s = int(time / 1000)
         m, s = divmod(s, 60)
         h, m = divmod(m, 60)
         return "{}:{}:{}".format(h, m, s)
