@@ -54,6 +54,13 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         # Queue
 
+
+
+        self.actionOpen_Files.triggered.connect(self.open_files)
+        self.AcceptDrops(True)
+
+        self.show()
+
     def open_files(self): 
         dialog = QFileDialog()
         dialog.setFileMode(QFileDialog.AnyFile)
@@ -100,10 +107,12 @@ class MainView(QMainWindow, Ui_MainWindow):
 
 
 
+
+
+
 if __name__ == "__main__":
     app = QApplication([])
     app.setApplicationName("Music Player : AP Final Project")
-    app.setStyle("Fusion")
 
     window = MainView()
     app.exec_()
