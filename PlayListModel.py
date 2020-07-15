@@ -11,19 +11,9 @@ class PlayListModel(QAbstractListModel):
 
     def data(self, ind, rl):
         if rl == Qt.DisplayRole:
-            dt = self.playlist.media(ind.row)
-            return dt.connectionUrl().filename()
+            dt = self.playlist.media(ind.row())
+            return dt.canonicalUrl().fileName()
     
     def rowCount(self, ind):
         return self.playlist.mediaCount()
-
-    def selectionChanged(self, ind):
-        i = ind.indexes()[0].row()
-        self.playlist.setCurrentIndex(i)
-
-    def playListChange(self, ind):
-        if ind > -1:
-            i = self.model.index(ind)
-            self.currendPlayList.setCurrentIndex(i)
-    
 
