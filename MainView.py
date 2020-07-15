@@ -57,7 +57,7 @@ class MainView(QMainWindow, Ui_MainWindow):
 
 
         self.actionOpen_Files.triggered.connect(self.open_files)
-        self.AcceptDrops(True)
+        self.setAcceptDrops(True)
 
         self.show()
 
