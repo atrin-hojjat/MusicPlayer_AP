@@ -178,6 +178,7 @@ class MainView(QMainWindow, Ui_MainWindow):
 
     def removeSongsFromDatabase(self):
         for index in sorted(self.songs.selectionModel().selectedRows()):
+            index = self.songListProxyModel.mapToSource(index)
             i = index.row()
             db.delete_song_by_id(self.songListModel.getId(index))
         self.songListModel.updData()
