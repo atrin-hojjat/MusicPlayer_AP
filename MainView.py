@@ -184,7 +184,7 @@ class MainView(QMainWindow, Ui_MainWindow):
     def addSongsToPlaylist(self):
         for index in sorted(self.songs.selectionModel().selectedRows()):
             self.playlist.addMedia(QMediaContent(
-                QUrl(self.songListModel.data(
+                QUrl.fromLocalFile(self.songListModel.data(
                     self.songListModel.index(index.row(),
                 4)))))
         self.playlistModel.layoutChanged.emit()
@@ -198,7 +198,7 @@ class MainView(QMainWindow, Ui_MainWindow):
         for index in sorted(self.playlistList.selectionModel().selectedRows()):
             dt = db.get_playlist(self.playlistListModel.getId(index))
             for line in dt:
-                self.playlist.addMedia(QMediaContent(QUrl(line[1])))
+                self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(line[1])))
         self.playlistModel.layoutChanged.emit()
 
 
