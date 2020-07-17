@@ -134,7 +134,7 @@ def add_playlist(playlist_name , song_list ) :
 
 def delete_playlist(playlist_name ) :
 
-    first.execute("DELETE FROM playlist WHERE playlist_name = ?" ,(playlist_name) )
+    first.execute("DELETE FROM playlist WHERE id = ?" ,(playlist_name) )
     first.execute("DELETE FROM playlist_song WHERE playlist_id = ? " (playlist_name) ) 
 
     connection.close()
