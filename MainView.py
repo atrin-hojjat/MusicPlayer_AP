@@ -84,10 +84,30 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.savePlaylistButton.pressed.connect(self.saveCurrentPlaylist)
         self.clearPlayListButton.pressed.connect(self.clearCurrentPlaylist)
 
+        self.moveSongDownButton.pressed.connect(self.moveSongDown)
+        self.moveSongUpButton.pressed.connect(self.moveSongUp)
+
         self.actionOpen_Files.triggered.connect(self.open_files)
         self.setAcceptDrops(True)
 
         self.show()
+
+    def moveSongUp(self):
+        for index in
+        sorted(self.currentPlayList.selectionModel.selectedRows()):
+            i = index.row()
+            if i < self.playlist.mediaCount:
+                self.playlist.move(i, i + 1)
+        self.playlistModel.layoutChanged.emit()
+
+    def moveSongDown(self):
+        for index in
+        sorted(self.currentPlayList.selectionModel.selectedRows()):
+            i = index.row()
+            if i > 0:
+                self.playlist.move(i, i - 1)
+        self.playlistModel.layoutChanged.emit()
+
 
     def saveCurrentPlaylist(self):
         text, ok = QInputDialog.getText(null, "Creating new playlist", "Enter playlist name")
@@ -99,6 +119,7 @@ class MainView(QMainWindow, Ui_MainWindow):
                 id = db.get_song_by_address(path)[0][0]
                 songs.append(id)
             db.add_playlist(text, songs)
+        self.songListModel.updData()
 
 
 
@@ -114,6 +135,7 @@ class MainView(QMainWindow, Ui_MainWindow):
                    metadata.artist , metadata.year,
                    metadata.album, address,
                    metadata.genre)
+           self.songListModel.updData()
 
     def removeSongsFromDatabase(self):
         for index in
