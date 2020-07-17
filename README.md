@@ -13,6 +13,9 @@ You have to run migrate.py before you run the program .
 
 This is a simple music player using qt QMediaPlayer and QMediaPlaylist modules for queueing and playing the songs. The database module is responsible for saving song info for imported songs and saving songs for different playlists. 
 
+## Run Command
+```python3 MainView.py```
+
 ## Gui
 GUI uses pyqt library. it uses a QTableView for song information with a sort proxy model with lets you sort the songs based on Artist/Year/Album/Name.The playlist and queue views use QListView with QAbstractListModel for handling data updates. You can import songs using the file menu. the imported songs will automaticly be added to database and current queue. You can change song positions on the current queue using `^` and 'v' buttons. You can also use `>` button to import songs/playlists from the songs/playlist lists. You can also clear the current queue or save it as a playlist.
 
