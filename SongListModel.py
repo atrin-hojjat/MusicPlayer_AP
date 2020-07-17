@@ -21,6 +21,7 @@ class SongListModel(QAbstractTableModel):
         if rl == Qt.DisplayRole:
             row = ind.row()
             col = ind.column()
+            print("{} {}".format(row, col))
 
             return self._data[row][col + 1]
 
