@@ -3,9 +3,14 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
+from tinytag import TinyTag
 import sys
 
 from PlayListModel import *
+from SongListModel import *
+from PlaylistListModel import *
+
+import database as db
 
 from MainWindow import Ui_MainWindow
 
@@ -58,6 +63,11 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         # Library List
 
+        self.songListModel = SongListModel()
+        self.songList.setModel(self.songListModel)
+        self.songList.set
+        
+
         # Playlist list
 
         # Queue
@@ -68,6 +78,18 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.setAcceptDrops(True)
 
         self.show()
+
+    def addFileToDatabase(self, address):
+       if len(db.get_song_by_address(address)) == 0:
+           metadata = TinyTag.get(address)
+
+           db.insert_song(metadata.title,
+                   metadata.artist , metadata.year,
+                   metadata.album, address,
+                   metadata.genre)
+
+    def addSongToPlaylist(self, playlist):
+        self.p
 
     def open_files(self): 
         dialog = QFileDialog()
@@ -81,6 +103,10 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         for f in files:
             print(f)
+
+            self.addFileToDatabase(f)
+
+
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(f)))
 
         self.playlistModel.layoutChanged.emit()
@@ -135,13 +161,11 @@ class MainView(QMainWindow, Ui_MainWindow):
     def selectionChanged(self, ind):
         i = ind.indexes()[0].row()
         self.playlist.setCurrentIndex(i)
-        print(i)
 
     def playListChange(self, ind):
         if ind > -1:
             i = self.playlistModel.index(ind)
             self.currentPlayList.setCurrentIndex(i)
-            print(i)
     
 
 
