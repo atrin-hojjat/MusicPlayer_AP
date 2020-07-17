@@ -38,11 +38,6 @@ class MainView(QMainWindow, Ui_MainWindow):
         # PlayList
         self.playlist = QMediaPlaylist(self.player)
 
-
-        self.playlist.addMedia(QMediaContent(QUrl(
-            "file:/Volumes/Atrin/Musics/My Musics/Bliss/No one built this moment/11 The Hope.wav")))
-
-
         self.player.setPlaylist(self.playlist)
 
         self.nextButton.pressed.connect(self.playlist.next)
@@ -65,10 +60,13 @@ class MainView(QMainWindow, Ui_MainWindow):
 
 
         self.songListModel = SongListModel()
+        self.songListProxyModel = QSortFilterProxyModel()
 
-        self.songs.setModel(self.songListModel)
+        self.songListProxyModel.setSourceModel(self.songListModel)
 
-        self.songListModel.updData()
+        self.songs.setModel(self.songListProxyModel)
+
+        self.songs.setSortingEnabled(True)
 
         self.removeSong.pressed.connect(self.removeSongsFromDatabase)
         self.insertSong.pressed.connect(self.addSongsToPlaylist)
@@ -82,6 +80,15 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.insertPlaylist.pressed.connect(self.addPlaylistToQueue)
 
         # Queue
+    
+
+        #playback
+        self.playbackGroup = QButtonGroup()
+        self.playbackSequential.setChecked(True)
+        self.playbackGroup.addButton(self.playbackSequential)
+        self.playbackGroup.addButton(self.playbackShuffle)
+        self.playbackGroup.addButton(self.playbackLoop)
+        self.playbackGroup.buttonClicked[QAbstractButton].connect(self.updatePlaybackMode)
 
 
         self.savePlayListButton.pressed.connect(self.saveCurrentPlaylist)
@@ -95,18 +102,26 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         self.show()
 
+    def updatePlaybackMode(self, btn):
+        if btn == self.playbackSequential:
+            self.playlist.setPlaybackMode(QMediaPlaylist.PlaybackMode.Sequential)
+        elif btn == self.playbackShuffle:
+            self.playlist.setPlaybackMode(QMediaPlaylist.PlaybackMode.Random)
+        else:
+            self.playlist.setPlaybackMode(QMediaPlaylist.PlaybackMode.CurrentItemInLoop)
+
     def moveSongUp(self):
-        for index in sorted(self.currentPlayList.selectionModel.selectedRows()):
+        for index in sorted(self.currentPlayList.selectionModel().selectedRows()):
             i = index.row()
-            if i < self.playlist.mediaCount:
-                self.playlist.move(i, i + 1)
+            if i < self.playlist.mediaCount():
+                self.playlist.moveMedia(i, i + 1)
         self.playlistModel.layoutChanged.emit()
 
     def moveSongDown(self):
-        for index in sorted(self.currentPlayList.selectionModel.selectedRows()):
+        for index in sorted(self.currentPlayList.selectionModel().selectedRows()):
             i = index.row()
             if i > 0:
-                self.playlist.move(i, i - 1)
+                self.playlist.moveMedia(i, i - 1)
         self.playlistModel.layoutChanged.emit()
 
 
@@ -120,9 +135,22 @@ class MainView(QMainWindow, Ui_MainWindow):
                 id = db.get_song_by_address(path)[0][0]
                 songs.append(id)
             db.add_playlist(text, songs)
-        self.songListModel.updData()
+        self.playlistListModel.updData()
 
-
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_Left:
+            print("Moving 5s backward")
+            self.player.setPosition(max(0, self.player.position() - 5000))
+        elif e.key() == Qt.Key_Right:
+            print("Moving 5s forward")
+            self.player.setPosition(min(self.player.duration(), self.player.position() + 5000))
+        elif e.key() == Qt.Key_Space:
+            if self.player.state() == QMediaPlayer.State.PlayingState:
+                print("Pausing")
+                self.player.pause()
+            else:
+                print("Playing")
+                self.player.play()
 
     def clearCurrentPlaylist(self):
         self.playlist.clear()
@@ -160,7 +188,7 @@ class MainView(QMainWindow, Ui_MainWindow):
         for index in sorted(self.playlistList.selectionModel().selectedRows()):
             dt = db.get_playlist(self.playlistListModel.getId(index))
             for line in dt:
-                pass
+                self.playlist.addMedia(QMediaContent(QUrl(line[1])))
         self.playlistModel.layoutChanged.emit()
 
 
