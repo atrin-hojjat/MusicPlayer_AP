@@ -93,7 +93,8 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         self.savePlayListButton.pressed.connect(self.saveCurrentPlaylist)
         self.clearPlayListButton.pressed.connect(self.clearCurrentPlaylist)
-
+        
+        self.removeFromQueueButton.pressed.connect(self.removeFromQueue)
         self.moveSongDownButton.pressed.connect(self.moveSongDown)
         self.moveSongUpButton.pressed.connect(self.moveSongUp)
 
