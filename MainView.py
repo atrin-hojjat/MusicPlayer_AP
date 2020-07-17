@@ -251,14 +251,14 @@ class MainView(QMainWindow, Ui_MainWindow):
         return "{}:{}:{}".format(h, m, s)
 
     def updateDuration(self, duration):
-        self.timeSlider.setMaximum(duration)
 
         self.timeTot = self.convertTime(duration)
         self.timeLabelText = "{} / {}".format(self.timePos, self.timeTot)
         self.timeLabel.setText(self.timeLabelText)
 
         self.timeSlider.blockSignals(True)
-        self.timeSlider.setValue(timeLabelText)
+        self.timeSlider.setMaximum(duration)
+        self.timeSlider.setValue(0)
         self.timeSlider.blockSignals(False)
 
     def updatePosition(self, position):
