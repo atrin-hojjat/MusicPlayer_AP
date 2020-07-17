@@ -85,7 +85,7 @@
      <rect>
       <x>280</x>
       <y>10</y>
-      <width>321</width>
+      <width>323</width>
       <height>371</height>
      </rect>
     </property>
@@ -129,6 +129,31 @@
          </property>
          <property name="text">
           <string>v</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QRadioButton" name="playbackSequential">
+         <property name="text">
+          <string>Sequential</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="playbackLoop">
+         <property name="text">
+          <string>Loop Current</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="playbackShuffle">
+         <property name="text">
+          <string>Shuffle</string>
          </property>
         </widget>
        </item>
