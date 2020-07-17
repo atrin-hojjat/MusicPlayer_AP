@@ -9,11 +9,11 @@ class PlayListModel(QAbstractListModel):
         super(PlayListModel, self).__init__(*args, *kwargs)
         self.playlist = playlist
 
-    def data(self, ind, rl):
+    def data(self, ind, rl = Qt.DisplayRole):
         if rl == Qt.DisplayRole:
             dt = self.playlist.media(ind.row())
             return dt.canonicalUrl().fileName()
     
-    def rowCount(self):
+    def rowCount(self, tt=0):
         return self.playlist.mediaCount()
 

@@ -63,16 +63,19 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         # Library List
 
+
         self.songListModel = SongListModel()
-        self.songList.setModel(self.songListModel)
+
+        self.songs.setModel(self.songListModel)
+
+        self.songListModel.updData()
 
         self.removeSong.pressed.connect(self.removeSongsFromDatabase)
         self.insertSong.pressed.connect(self.addSongsToPlaylist)
         
 
         # Playlist list
-        self.playlistListModel =
-        PlaylistListModel()
+        self.playlistListModel = PlaylistListModel()
         self.playlistList.setModel(self.playlistListModel)
 
         self.removePlaylist.pressed.connect(self.removePlaylistFromDatabase)
@@ -81,7 +84,7 @@ class MainView(QMainWindow, Ui_MainWindow):
         # Queue
 
 
-        self.savePlaylistButton.pressed.connect(self.saveCurrentPlaylist)
+        self.savePlayListButton.pressed.connect(self.saveCurrentPlaylist)
         self.clearPlayListButton.pressed.connect(self.clearCurrentPlaylist)
 
         self.moveSongDownButton.pressed.connect(self.moveSongDown)
@@ -93,16 +96,14 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.show()
 
     def moveSongUp(self):
-        for index in
-        sorted(self.currentPlayList.selectionModel.selectedRows()):
+        for index in sorted(self.currentPlayList.selectionModel.selectedRows()):
             i = index.row()
             if i < self.playlist.mediaCount:
                 self.playlist.move(i, i + 1)
         self.playlistModel.layoutChanged.emit()
 
     def moveSongDown(self):
-        for index in
-        sorted(self.currentPlayList.selectionModel.selectedRows()):
+        for index in sorted(self.currentPlayList.selectionModel.selectedRows()):
             i = index.row()
             if i > 0:
                 self.playlist.move(i, i - 1)
@@ -110,7 +111,7 @@ class MainView(QMainWindow, Ui_MainWindow):
 
 
     def saveCurrentPlaylist(self):
-        text, ok = QInputDialog.getText(null, "Creating new playlist", "Enter playlist name")
+        text, ok = QInputDialog.getText(None, "Creating new playlist", "Enter playlist name")
 
         if ok: 
             songs = []
@@ -138,14 +139,12 @@ class MainView(QMainWindow, Ui_MainWindow):
            self.songListModel.updData()
 
     def removeSongsFromDatabase(self):
-        for index in
-        sorted(self.songs.selectionModel.selectedRows()):
+        for index in sorted(self.songs.selectionModel().selectedRows()):
             i = index.row()
             db.delete_song_by_id(self.songListModel.getId(index))
         self.songListModel.updData()
     def addSongsToPlaylist(self):
-        for index in
-        sorted(self.songs.selectionModel.selectedRows()):
+        for index in sorted(self.songs.selectionModel().selectedRows()):
             self.playlist.addMedia(QMediaContent(
                 QUrl(self.songListModel.data(
                     self.songListModel.index(index.row(),
@@ -153,14 +152,12 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.playlistModel.layoutChanged.emit()
     
     def removePlaylistFromDatabase(self):
-        for index in
-        sorted(self.playlistList.selectionModel.selectedRows()):
+        for index in sorted(self.playlistList.selectionModel().selectedRows()):
             db.delete_playlist(self.playlistListModel.getId(index))
         self.playlistListModel.updData()
 
     def addPlaylistToQueue(self):
-        for index in
-        sorted(self.playlistList.selectionModel.selectedRows()):
+        for index in sorted(self.playlistList.selectionModel().selectedRows()):
             dt = db.get_playlist(self.playlistListModel.getId(index))
             for line in dt:
                 pass

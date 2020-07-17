@@ -7,7 +7,7 @@ import database as db
 
 class SongListModel(QAbstractTableModel):
     def __init__(self, *args, **kwargs):
-        super(PlayListModel, self).__init__(*args, *kwargs)
+        super(SongListModel, self).__init__(*args, *kwargs)
         self._data = db.get_songs()
 
     def updData(self):
@@ -17,7 +17,7 @@ class SongListModel(QAbstractTableModel):
 
     def getId(self, ind):
         return self._data[ind.row()][0]
-    def data(self, ind, rl):
+    def data(self, ind, rl = Qt.DisplayRole):
         if rl == Qt.DisplayRole:
             row = ind.row()
             col = ind.column()
@@ -30,11 +30,13 @@ class SongListModel(QAbstractTableModel):
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
             return self.header_labels[section]
-    return QAbstractTableModel.headerData(self, section, orientation, role)
+        return QAbstractTableModel.headerData(self, section, orientation, role)
             
     
-    def rowCount(self):
+    def rowCount(self, parent=QModelIndex(), tt=0):
         return len(self._data)
-    def columnCount(self):
-        return len(self._data[0])
+    def columnCount(self, parent=QModelIndex(), tt=0):
+        if len(self._data) == 0:
+            return 0
+        else: return len(self._data[0]) - 1
 

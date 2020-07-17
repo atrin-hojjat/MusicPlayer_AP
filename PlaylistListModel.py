@@ -6,8 +6,8 @@ from PyQt5.QtMultimediaWidgets import *
 import database as db
 
 class PlaylistListModel(QAbstractListModel):
-    def __init__(self, *arg, **kwargs):
-        super(PlayListModel, self).__init__(*args, *kwargs)
+    def __init__(self, *args, **kwargs):
+        super(PlaylistListModel, self).__init__(*args, *kwargs)
         self._data = db.get_playlists()
 
     def updData(self):
@@ -18,12 +18,12 @@ class PlaylistListModel(QAbstractListModel):
 
     def getId(self, ind):
         return self._data[ind.row()][0]
-    def data(self, ind, rl):
+    def data(self, ind, rl = Qt.DisplayRole):
         if rl == Qt.DisplayRole:
             return self._data[ind.row()][1]
 
     
-    def rowCount(self):
+    def rowCount(self, tt=0):
 
         return len(self._data)
 
