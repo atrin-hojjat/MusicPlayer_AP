@@ -8,26 +8,23 @@ import database as db
 class PlaylistListModel(QAbstractListModel):
     def __init__(self, *arg, **kwargs):
         super(PlayListModel, self).__init__(*args, *kwargs)
-        self.playlist = playlist
-        self.data = []
+        self._data = db.get_playlists()
 
     def updData(self):
         self.layoutAboutToBeChanged.emit()
-        self.data = db.get_playlists()
+        self._data = db.get_playlists()
         self.layoutChanged.emit()
 
 
+    def getId(self, ind):
+        return self._data[ind.row()][0]
     def data(self, ind, rl):
         if rl == Qt.DisplayRole:
-
-
-            # Access Database Here
-
-            return self.data[ind.row()][1]
+            return self._data[ind.row()][1]
 
     
     def rowCount(self):
 
-        return len(self.data)
+        return len(self._data)
 
 

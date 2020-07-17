@@ -8,23 +8,33 @@ import database as db
 class SongListModel(QAbstractTableModel):
     def __init__(self, *args, **kwargs):
         super(PlayListModel, self).__init__(*args, *kwargs)
-        self.playlist = playlist
+        self._data = db.get_songs()
 
     def updData(self):
         self.layoutAboutToBeChanged.emit()
-        self.data = db.get_songs()
+        self._data = db.get_songs()
         self.layoutChanged.emit()
 
+    def getId(self, ind):
+        return self._data[ind.row()][0]
     def data(self, ind, rl):
         if rl == Qt.DisplayRole:
             row = ind.row()
             col = ind.column()
 
-            return self.data[row][col + 1]
+            return self._data[row][col + 1]
+
+    header_labels = ["Song", "Artist", "Year",
+    "Album", "Address", "Genre"]
+
+    def headerData(self, section, orientation, role=Qt.DisplayRole):
+        if role == Qt.DisplayRole and orientation == Qt.Horizontal:
+            return self.header_labels[section]
+    return QAbstractTableModel.headerData(self, section, orientation, role)
             
     
     def rowCount(self):
-        return len(self.data)
+        return len(self._data)
     def columnCount(self):
-        return len(self.data[0])
+        return len(self._data[0])
 
