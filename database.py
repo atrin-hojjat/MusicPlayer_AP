@@ -9,26 +9,31 @@ first = connection.cursor()
 
 def insert_song(song_name , artist , publish_year , album , address , gener) :
 
-    first.execute("INSERT INTO music VALUES (? , ? , ? , ? , ? , ? ) ", 
+    first.execute("INSERT INTO music(song_name, artist, publish_year, album, address, gener) VALUES (? , ? , ? , ? , ? , ? ) ", 
         (song_name , artist , publish_year , album , address , gener )  ) 
     
 
 #delete a song by it's id
 
 def get_song_by_address(address):
-    first.execute("SELECT * FROM music WHERE address=?", (address))
+    first.execute("SELECT * FROM music WHERE address=?", (address, ))
     ret = first.fetchall()
     return ret
 
 def delete_song_by_id(id ) :
-    first.execute("DELETE from music WHERE rowid = ?" , (id) ) 
+    first.execute("DELETE from music WHERE rowid = ?" , (id, ) ) 
 
+
+def get_songs():
+    first.execute("select * from music")
+    ret = first.fetchall()
+    return ret
 
 #gives the user all the songs in album which he wants
 
 def get_album(album ) :
     
-    first.execute("SELECT * FROM music WHERE album  = ?" , (album ) )
+    first.execute("SELECT * FROM music WHERE album  = ?" , (album, ) )
     new_list = first.fetchall()
     
 
@@ -38,7 +43,7 @@ def get_album(album ) :
 
 def get_artist(artist ) :
 
-    first.execute("SELECT * FROM music WHERE artist = ?" , (artist) ) 
+    first.execute("SELECT * FROM music WHERE artist = ?" , (artist,) ) 
     new_list = first.fetchall() 
     
 
@@ -48,7 +53,7 @@ def get_artist(artist ) :
 
 def get_gener(gener) :
 
-    first.execute("SELETC * from music WHERE gener = ? " , (gener) ) 
+    first.execute("SELETC * from music WHERE gener = ? " , (gener, ) ) 
     new_list = first.fetchall() 
     
 
@@ -88,7 +93,7 @@ def get_gener() :
 
 def get_playlist(id ) :
     
-    first.execute("SELETC * FROM playlist_song WHERE playlist_id = ? " (id) )
+    first.execute("SELETC * FROM playlist_song WHERE playlist_id = ? ", (id,) )
     new_list = first.fetchall() 
     
 
@@ -108,23 +113,23 @@ def get_playlists() :
 
 def add_playlist(playlist_name , song_list ) :
 
-    first.execute("INSERT INTO playlist VALUES (?) " , (playlist_name) ) 
+    first.execute("INSERT INTO playlist(playlist_name) VALUES (?) " , (playlist_name,) ) 
     first.execute("SELECT id , * FROM playlist LIMIT 1 ORDER BY DESC " ) 
     
     element = first.fetchall()
 
     new_list = []
     for i in range(len(song_list) ) :
-        new_list.append(i + 1 , song_list[i] , element[1])
-    first.execute("INSERT INTO Playlist_song VALUES (? , ? , ? ) " , new_list) 
+        new_list.append((i + 1 , song_list[i] , element[1], ))
+    first.execute("INSERT INTO Playlist_song(track_number, track_id, playlist_id) VALUES (? , ? , ? ) " , new_list) 
 
 
 #delete a playlist by its name which user gives us
 
 def delete_playlist(playlist_name ) :
 
-    first.execute("DELETE FROM playlist WHERE id = ?" ,(playlist_name) )
-    first.execute("DELETE FROM playlist_song WHERE playlist_id = ? " (playlist_name) ) 
+    first.execute("DELETE FROM playlist WHERE id = ?" ,(playlist_name, ) )
+    first.execute("DELETE FROM playlist_song WHERE playlist_id = ? " (playlist_name ,) ) 
 
 
 
