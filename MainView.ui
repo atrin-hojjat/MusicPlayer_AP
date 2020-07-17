@@ -85,7 +85,7 @@
      <rect>
       <x>280</x>
       <y>10</y>
-      <width>323</width>
+      <width>311</width>
       <height>371</height>
      </rect>
     </property>
@@ -110,7 +110,7 @@
         <widget class="QPushButton" name="moveSongUpButton">
          <property name="maximumSize">
           <size>
-           <width>50</width>
+           <width>30</width>
            <height>16777215</height>
           </size>
          </property>
@@ -120,10 +120,23 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="moveSongDownButton">
+        <widget class="QPushButton" name="pushButton">
          <property name="maximumSize">
           <size>
            <width>50</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="moveSongDownButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
            <height>16777215</height>
           </size>
          </property>
