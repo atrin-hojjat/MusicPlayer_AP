@@ -21,7 +21,7 @@ Database module uses sqlite with three tables:
 * playlists: the table saves ids and names for created playlists
 * playlist_song: this table is a turntable for saving songs in each playlist
 
-![Database Scheme](/images/database.png)
+![Database Scheme](/images/Database.png)
 
 
 [Diagram](https://dbdiagram.io/d/5f11922c74ca2227330d7b25)
