@@ -3,6 +3,7 @@ Python music player/ AP final project #1
 
 ## Requirements
 PyQt5, sqlite, sip, TinyTag
+You have to run migrate.py before you run the program 
 
 ## Descritpion
 
