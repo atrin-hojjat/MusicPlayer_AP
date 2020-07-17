@@ -65,19 +65,46 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         self.songListModel = SongListModel()
         self.songList.setModel(self.songListModel)
-        self.songList.set
+
+        self.removeSong.pressed.connect(self.removeSongsFromDatabase)
+        self.insertSong.pressed.connect(self.addSongsToPlaylist)
         
 
         # Playlist list
+        self.playlistListModel =
+        PlaylistListModel()
+        self.playlistList.setModel(self.playlistListModel)
+
+        self.removePlaylist.pressed.connect(self.removePlaylistFromDatabase)
+        self.insertPlaylist.pressed.connect(self.addPlaylistToQueue)
 
         # Queue
 
 
+        self.savePlaylistButton.pressed.connect(self.saveCurrentPlaylist)
+        self.clearPlayListButton.pressed.connect(self.clearCurrentPlaylist)
 
         self.actionOpen_Files.triggered.connect(self.open_files)
         self.setAcceptDrops(True)
 
         self.show()
+
+    def saveCurrentPlaylist(self):
+        text, ok = QInputDialog.getText(null, "Creating new playlist", "Enter playlist name")
+
+        if ok: 
+            songs = []
+            for ind in range(self.playlist.mediaCount()):
+                path = self.playlist.media(ind).canonicalUrl().path()
+                id = db.get_song_by_address(path)[0][0]
+                songs.append(id)
+            db.add_playlist(text, songs)
+
+
+
+    def clearCurrentPlaylist(self):
+        self.playlist.clear()
+        self.playlistModel.layoutChanged.emit()
 
     def addFileToDatabase(self, address):
        if len(db.get_song_by_address(address)) == 0:
@@ -88,8 +115,36 @@ class MainView(QMainWindow, Ui_MainWindow):
                    metadata.album, address,
                    metadata.genre)
 
-    def addSongToPlaylist(self, playlist):
-        self.p
+    def removeSongsFromDatabase(self):
+        for index in
+        sorted(self.songs.selectionModel.selectedRows()):
+            i = index.row()
+            db.delete_song_by_id(self.songListModel.getId(index))
+        self.songListModel.updData()
+    def addSongsToPlaylist(self):
+        for index in
+        sorted(self.songs.selectionModel.selectedRows()):
+            self.playlist.addMedia(QMediaContent(
+                QUrl(self.songListModel.data(
+                    self.songListModel.index(index.row(),
+                4)))))
+        self.playlistModel.layoutChanged.emit()
+    
+    def removePlaylistFromDatabase(self):
+        for index in
+        sorted(self.playlistList.selectionModel.selectedRows()):
+            db.delete_playlist(self.playlistListModel.getId(index))
+        self.playlistListModel.updData()
+
+    def addPlaylistToQueue(self):
+        for index in
+        sorted(self.playlistList.selectionModel.selectedRows()):
+            dt = db.get_playlist(self.playlistListModel.getId(index))
+            for line in dt:
+                pass
+        self.playlistModel.layoutChanged.emit()
+
+
 
     def open_files(self): 
         dialog = QFileDialog()
