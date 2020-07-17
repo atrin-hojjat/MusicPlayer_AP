@@ -183,6 +183,7 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.songListModel.updData()
     def addSongsToPlaylist(self):
         for index in sorted(self.songs.selectionModel().selectedRows()):
+            index = self.songListProxyModel.mapToSource(index)
             self.playlist.addMedia(QMediaContent(
                 QUrl.fromLocalFile(self.songListModel.data(
                     self.songListModel.index(index.row(),
