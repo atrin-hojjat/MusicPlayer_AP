@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
+import sys
 
 from PlayListModel import *
 
@@ -30,7 +31,12 @@ class MainView(QMainWindow, Ui_MainWindow):
 
 
         # PlayList
-        self.playlist = QMediaPlaylist()
+        self.playlist = QMediaPlaylist(self.player)
+
+
+        self.playlist.addMedia(QMediaContent(QUrl(
+            "file:/Volumes/Atrin/Musics/My Musics/Bliss/No one built this moment/11 The Hope.wav")))
+
 
         self.player.setPlaylist(self.playlist)
 
@@ -45,6 +51,8 @@ class MainView(QMainWindow, Ui_MainWindow):
         playlist_sel_mod.selectionChanged.connect(self.selectionChanged)
 
 
+        self.player.mediaStatusChanged.connect(self.updateMetaData)
+        self.player.mediaStatusChanged.connect(lambda: print("TEST"))
 
 
 
@@ -78,6 +86,25 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.playlistModel.layoutChanged.emit()
 
 
+    def updateMetaData(self, status): 
+        print(status)
+        print(QMediaPlayer.LoadedMedia)
+        print("Status Update")
+        if status == QMediaPlayer.LoadedMedia or status == QMediaPlayer.LoadingMedia:
+            self.musicNameLabel.setText(self.player.metaData("Title"))
+
+            artist = self.player.metaData("Author")
+            if artist == "": artist = self.player.metaDatat("Artist")
+            if artist == "": artist = self.player.metaDatat("Composer")
+            if artist == "": artist = self.player.metaDatat("AlbumArtist")
+
+            self.musicArtistLabel.setText(artist)
+
+            self.musicAlbumLabel.setText(self.player.metaData("Album"))
+            self.musicGenerLabel.setText(self.player.metaData("Gener"))
+        else:
+            print("Media not loaded")
+
     def convertTime(self, time):
         if not time: time = 0
         s = int(time / 1000)
@@ -108,11 +135,13 @@ class MainView(QMainWindow, Ui_MainWindow):
     def selectionChanged(self, ind):
         i = ind.indexes()[0].row()
         self.playlist.setCurrentIndex(i)
+        print(i)
 
     def playListChange(self, ind):
         if ind > -1:
             i = self.playlistModel.index(ind)
             self.currentPlayList.setCurrentIndex(i)
+            print(i)
     
 
 
@@ -122,7 +151,7 @@ class MainView(QMainWindow, Ui_MainWindow):
 
 
 if __name__ == "__main__":
-    app = QApplication([])
+    app = QApplication(sys.argv)
     app.setApplicationName("Music Player : AP Final Project")
 
     window = MainView()
