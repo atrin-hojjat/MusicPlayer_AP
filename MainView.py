@@ -102,6 +102,13 @@ class MainView(QMainWindow, Ui_MainWindow):
 
         self.show()
 
+    def removeFromQueue(self):
+        for index in sorted(self.currentPlayList.selectionModel().selectedRows()):
+            i = index.row()
+            if i > 0:
+                self.playlist.removeMedia(i)
+        self.playlistModel.layoutChanged.emit()
+
     def updatePlaybackMode(self, btn):
         if btn == self.playbackSequential:
             self.playlist.setPlaybackMode(QMediaPlaylist.PlaybackMode.Sequential)
