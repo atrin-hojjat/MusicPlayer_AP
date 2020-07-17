@@ -16,6 +16,11 @@ def insert_song(song_name , artist , publish_year , album , address , gener) :
 
 #delete a song by it's id
 
+def get_song_by_address(address):
+    first.execute("SELECT * FROM music WHERE address=?", (address))
+    ret = first.fetchall()
+    return ret
+
 def delete_song_by_id(id ) :
     first.execute("DELETE from music WHERE rowid = ?" , (id) ) 
 
