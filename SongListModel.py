@@ -5,29 +5,26 @@ from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
 import database as db
 
-class PlaylistListModel(QAbstractListModel):
-    def __init__(self, *arg, **kwargs):
+class SongListModel(QAbstractTableModel):
+    def __init__(self, *args, **kwargs):
         super(PlayListModel, self).__init__(*args, *kwargs)
         self.playlist = playlist
-        self.data = []
 
     def updData(self):
         self.layoutAboutToBeChanged.emit()
-        self.data = db.get_playlists()
+        self.data = db.get_songs()
         self.layoutChanged.emit()
-
 
     def data(self, ind, rl):
         if rl == Qt.DisplayRole:
+            row = ind.row()
+            col = ind.column()
 
-
-            # Access Database Here
-
-            return self.data[ind.row()][1]
-
+            return self.data[row][col + 1]
+            
     
     def rowCount(self):
-
         return len(self.data)
-
+    def columnCount(self):
+        return len(self.data[0])
 

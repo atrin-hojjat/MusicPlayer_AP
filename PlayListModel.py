@@ -14,6 +14,6 @@ class PlayListModel(QAbstractListModel):
             dt = self.playlist.media(ind.row())
             return dt.canonicalUrl().fileName()
     
-    def rowCount(self, ind):
+    def rowCount(self):
         return self.playlist.mediaCount()
 
