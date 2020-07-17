@@ -114,14 +114,14 @@ class MainView(QMainWindow, Ui_MainWindow):
         for index in sorted(self.currentPlayList.selectionModel().selectedRows()):
             i = index.row()
             if i < self.playlist.mediaCount():
-                self.playlist.moveMedia(i, i + 1)
+                self.playlist.moveMedia(i, i - 1)
         self.playlistModel.layoutChanged.emit()
 
     def moveSongDown(self):
         for index in sorted(self.currentPlayList.selectionModel().selectedRows()):
             i = index.row()
             if i > 0:
-                self.playlist.moveMedia(i, i - 1)
+                self.playlist.moveMedia(i, i + 1)
         self.playlistModel.layoutChanged.emit()
 
 
