@@ -192,8 +192,7 @@ class MainView(QMainWindow, Ui_MainWindow):
         self.playlistModel.layoutChanged.emit()
         
         if self.player.state() != QMediaPlayer.PlayingState:
-            i = self.playlist.mediaCount() -
-            len(self.songs.selectionModel().selectedRows())
+            i = self.playlist.mediaCount() - len(self.songs.selectionModel().selectedRows())
             self.playlist.setCurrentIndex(i)
             self.player.play()
 
@@ -212,22 +211,23 @@ class MainView(QMainWindow, Ui_MainWindow):
         
 
     def dragEnterEvent(self, e) :
-        if e.mimeData().husUrls():
+        if e.mimeData().hasUrls():
             e.acceptProposedAction()
 
     def dropEvent(self , e ) :
         for url in e.mimeData().urls() :
             
-            self.addFileToDatabase(url)
+            self.addFileToDatabase(url.path())
             
-            self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(ururl)))
+            self.playlist.addMedia(QMediaContent(url))
         
-        self.model.layoutChanged.emit()
+        self.playlistModel.layoutChanged.emit()
+
         
         if self.player.state() != QMediaPlayer.PlayingState:
             i = self.playlist.mediaCount() - len(e.mimeData().urls())
             self.playlist.setCurrentIndex(i)
-            slf.player.play()
+            self.player.play()
 
     def open_files(self): 
         dialog = QFileDialog()
